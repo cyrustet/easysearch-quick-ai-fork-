@@ -3,7 +3,7 @@ import requests
 import json
 
 # Replace with your actual Gemini API key
-GEMINI_API_KEY = "YOUR_GEMINI_API_KEY"
+GEMINI_API_KEY = "AIzaSyAS24Vv4gaDqDpR5sQPUdb0mjPrWlqAplI"
 
 # Sensitive topics to avoid (adjust as needed)
 SENSITIVE_TOPICS = ["hacking", "racism", "sexual content"]
