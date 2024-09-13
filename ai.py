@@ -1,5 +1,5 @@
-import requests
 import os
+import requests
 import sympy
 
 # Replace 'YOUR_API_KEY' with your actual Gemini API key
@@ -36,27 +36,37 @@ def generate_text(prompt):
 def about_me():
     return "I am EasySearch Ai, a large language model trained to be informative and comprehensive."
 
-def main():
-    while True:
-        prompt = input("Ask me anything (or type 'quit' to exit): ")
-        if prompt.lower() == 'quit':
-            break
-        elif prompt.lower() == 'about you':
-            print(about_me())
+def app(environ, start_response):
+    """
+    This function simulates a basic web application using Gunicorn.
+    You might need to adjust it based on your specific Gunicorn configuration.
+    """
+    try:
+        # Retrieve the port from the environment variable (optional, adjust as needed)
+        port = int(os.environ.get('PORT', 8000))
+
+        # Simulate user input (replace with actual interaction logic if needed)
+        query = environ['QUERY_STRING'].split('=')[1] if 'QUERY_STRING' in environ else 'What can I ask you?'
+
+        # Process the query
+        if query.lower() == 'about you':
+            response_text = about_me()
         else:
-            try:
-                # Check if the prompt contains a mathematical expression
-                if sympy.sympify(prompt).is_number:
-                    # Evaluate the expression using SymPy
-                    result = sympy.sympify(prompt).evalf()
-                    print(f"The result of the calculation is: {result}")
-                else:
-                    generated_text = generate_text(prompt)
-                    print(generated_text)
-            except sympy.SympifyError:
-                # If SymPy cannot parse the expression, proceed with text generation
-                generated_text = generate_text(prompt)
-                print(generated_text)
+            response_text = generate_text(query)
+
+        # Set the response status and headers
+        start_response('200 OK', [('Content-Type', 'text/plain')])
+
+        # Return the generated text
+        return [response_text.encode()]
+    except Exception as e:
+        print(f"Error: {e}")
+        start_response('500 Internal Server Error', [])
+        return [b"An error occurred."]
 
 if __name__ == "__main__":
-    main()
+    # This section is for development purposes, not deployment on Render.com
+    from wsgiref.simple_server import make_server
+    httpd = make_server('', 8000, app)
+    print("Serving on port 8000...")
+    httpd.serve_forever()
