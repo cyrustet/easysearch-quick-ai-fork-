@@ -1,9 +1,10 @@
+from flask import Flask, request
 import os
 import requests
 import json
 
-# Replace with your actual Gemini API key
-GEMINI_API_KEY = "AIzaSyAS24Vv4gaDqDpR5sQPUdb0mjPrWlqAplI"
+# Replace with your actual Gemini API key (store securely with environment variables)
+GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
 
 # Sensitive topics to avoid (adjust as needed)
 SENSITIVE_TOPICS = ["hacking", "racism", "sexual content"]
@@ -30,9 +31,8 @@ def generate_text(prompt):
     }
     data = {
         "prompt": prompt,
-        # Adjust max_tokens and temperature as needed
         "max_tokens": 1024,
-        "temperature": 0.7
+        "temperature": 0.7  # Adjust max_tokens and temperature as needed
     }
 
     try:
@@ -86,15 +86,14 @@ def handle_request(request):
     }
 
 
-# Vercel deployment doesn't require this section (comment out)
+# Create the Flask app (error is solved by including this section)
+app = Flask(__name__)
+
+# Route the root path to the handle_request function
+@app.route("/", methods=["GET"])
+def index():
+    return handle_request(request)
+
+
 if __name__ == "__main__":
-    from flask import Flask, request
-
-    app = Flask(__name__)
-
-    @app.route("/", methods=["GET"])
-    def index():
-        return handle_request(request)
-
-    if __name__ == "__main__":
-        app.run(debug=True)
+    app.run(debug=True)
