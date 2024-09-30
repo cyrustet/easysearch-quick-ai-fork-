@@ -1,3 +1,5 @@
-flask
+Flask
+python-dotenv
+google-generativeai
 requests
 werkzeug
