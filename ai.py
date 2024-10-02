@@ -3,10 +3,10 @@ import os
 import google.generativeai as genai
 from dotenv import load_dotenv
 
-# Load from .env file
+# Load from .env file, preferably 
 load_dotenv()
 
-# Use the key from .env
+# use the key in .env
 api_key = os.getenv("GEMINI_API_KEY")
 if not api_key:
     raise ValueError("API Key not there")
@@ -21,67 +21,37 @@ generation_config = {
     "response_mime_type": "text/plain",
 }
 
+
 model = genai.GenerativeModel(
     model_name="gemini-1.0-pro",
     generation_config=generation_config
 )
+model=genai.GenerativeModel(
+  model_name="gemini-1.5-flash",
+  system_instruction="Your name is EasySearch AI.")
 
 # Flask
 app = Flask(__name__)
 
-# Restricted topics
-restricted_topics = ["hacking", "racism", "sexual activities"]
-
-# Helper function to check for restricted content
-def contains_restricted_content(user_input):
-    for topic in restricted_topics:
-        if topic in user_input.lower():
-            return True
-    return False
-
-# Predefined response for "Who are you?"
-def check_for_identity_question(user_input):
-    identity_questions = ["who are you", "what are you", "can you tell me who you are"]
-    for question in identity_questions:
-        if question in user_input.lower():
-            return True
-    return False
-
-# Endpoint for /api/ask
+# Endpoint for /api/ask, you can change to something else bro
 @app.route('/api/ask', methods=['GET'])
 def ask():
-    # Get the message from query parameters
+    # Get the message from query parameters( where we'll decide link looks)
     user_input = request.args.get("message", default="", type=str)
     
     if not user_input:
         return jsonify({"error": "No message provided. Please include a 'message' query parameter."}), 400
-    
-    # Check for restricted content
-    if contains_restricted_content(user_input):
-        return jsonify({"error": "The AI does not support or encourage discussions on hacking, racism, or sexual activities."}), 403
 
-    # Check if the user is asking for identity
-    if check_for_identity_question(user_input):
-        return jsonify({"answer": "I am an EasySearch AI, designed to assist with general information and search queries."})
-    
-    # Start a new chat session and send the message
+
     chat_session = model.start_chat(
         history=[]
     )
     
+    
     response = chat_session.send_message(user_input)
     
-    # Return the response as JSON
+    # Return the response as JSON, 
     return jsonify({"answer": response.text})
-
-# Endpoint to return details about the AI model
-@app.route('/api/details', methods=['GET'])
-def get_details():
-    details = {
-        "model_name": "EasySearch AI",
-        "description": "I am an AI language model designed for general search and information retrieval. I strictly avoid engaging in or promoting hacking, racism, or sexual content."
-    }
-    return jsonify(details)
 
 # Main entry
 if __name__ == "__main__":
