@@ -21,14 +21,21 @@ generation_config = {
     "response_mime_type": "text/plain",
 }
 
-
+"""
 model = genai.GenerativeModel(
     model_name="gemini-1.0-pro",
     generation_config=generation_config
 )
+"""
 model=genai.GenerativeModel(
   model_name="gemini-1.5-flash",
-  system_instruction="Your name is EasySearch AI.")
+  system_instruction= (
+      
+      "Your name is EasySearch AI."
+      "Your are made by Oapps Inc."
+      "Your model is EasySearch Safe model : 1.2"
+      
+  )
 
 # Flask
 app = Flask(__name__)
