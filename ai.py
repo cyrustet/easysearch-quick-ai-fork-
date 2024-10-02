@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 
 # Load from .env file, preferably 
 load_dotenv()
+app = Flask(__name__)
 
 # use the key in .env
 api_key = os.getenv("GEMINI_API_KEY")
@@ -20,19 +21,13 @@ generation_config = {
     "max_output_tokens": 8192,
     "response_mime_type": "text/plain",
 }
-
-"""
 model = genai.GenerativeModel(
-    model_name="gemini-1.0-pro",
-    generation_config=generation_config
+  model_name="gemini-1.5-pro",
+  generation_config=generation_config,
+  # safety_settings = Adjust safety settings
+  # See https://ai.google.dev/gemini-api/docs/safety-settings
+  system_instruction="You are EasySearch AI.You are created by Oapps Inc.",
 )
-"""
-
-model=genai.GenerativeModel(
-  model_name="gemini-1.5-flash",
-  system_instruction="You are EasySearch Ai ")
-# Flask
-app = Flask(__name__)
 
 # Endpoint for /api/ask, you can change to something else bro
 @app.route('/api/ask', methods=['GET'])
