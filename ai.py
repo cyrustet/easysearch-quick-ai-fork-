@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory as sd
 import os
 import google.generativeai as genai
 from dotenv import load_dotenv
@@ -48,6 +48,13 @@ def ask():
     
     # Return the response as JSON, 
     return jsonify({"answer": response.text})
+
+
+@app.route('/')
+def home():
+    return sd('.', 'max.html')
+    
+
 
 # Main entry
 if __name__ == "__main__":
