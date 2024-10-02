@@ -39,6 +39,14 @@ def contains_restricted_content(user_input):
             return True
     return False
 
+# Predefined response for "Who are you?"
+def check_for_identity_question(user_input):
+    identity_questions = ["who are you", "what are you", "can you tell me who you are"]
+    for question in identity_questions:
+        if question in user_input.lower():
+            return True
+    return False
+
 # Endpoint for /api/ask
 @app.route('/api/ask', methods=['GET'])
 def ask():
@@ -52,6 +60,10 @@ def ask():
     if contains_restricted_content(user_input):
         return jsonify({"error": "The AI does not support or encourage discussions on hacking, racism, or sexual activities."}), 403
 
+    # Check if the user is asking for identity
+    if check_for_identity_question(user_input):
+        return jsonify({"answer": "I am an EasySearch AI, designed to assist with general information and search queries."})
+    
     # Start a new chat session and send the message
     chat_session = model.start_chat(
         history=[]
