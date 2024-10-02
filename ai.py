@@ -29,10 +29,9 @@ model = genai.GenerativeModel(
 """
 model=genai.GenerativeModel(
   model_name="gemini-1.5-flash",
-  system_instruction= ( "Your name is EasySearch AI."
-      "Your are made by Oapps Inc."
-      "Your model is EasySearch Safe model : 1.2"
-                      )
+  generation_config=generation_config,
+  system_instruction= "Your name is EasySearch AI. Your are made by Oapps Inc.Your model is EasySearch Safe model : 1.2"
+                      
                        
       
 )
