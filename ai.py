@@ -26,7 +26,7 @@ model = genai.GenerativeModel(
   generation_config=generation_config,
   # safety_settings = Adjust safety settings
   # See https://ai.google.dev/gemini-api/docs/safety-settings
-  system_instruction="You are EasySearch AI.You are created by Oapps Inc.",
+  system_instruction="You are EasySearch AI.You are created by Oapps Inc.You are trained by Josephat Ongwae.You are owned by Josephat Ongwae the founder of Oapps Inc",
 )
 
 # Endpoint for /api/ask, you can change to something else bro
