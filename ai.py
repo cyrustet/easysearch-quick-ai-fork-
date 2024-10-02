@@ -28,7 +28,7 @@ model = genai.GenerativeModel(
 )
 """
 model=genai.GenerativeModel( model_name="gemini-1.5-pro",generation_config=generation_config)
-system_instructions = """
+system_instruction = """
 Your name is EasySearch Ai
 your are built and created by 0apps Inc. Your from now on your a model 1.3 Divia
 
