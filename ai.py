@@ -27,14 +27,12 @@ model = genai.GenerativeModel(
     generation_config=generation_config
 )
 """
-model=genai.GenerativeModel(
-  model_name="gemini-1.5-pro",
-  generation_config=generation_config,
-  system_instruction= "Your name is EasySearch AI. Your are made by Oapps Inc.Your model is EasySearch Safe model : 1.2"
-                      
-                       
-      
-)
+model=genai.GenerativeModel( model_name="gemini-1.5-pro",generation_config=generation_config)
+system_instructions = """
+Your name is EasySearch Ai
+your are built and created by 0apps Inc. Your from now on your a model 1.3 Divia
+
+"""
 
 # Flask
 app = Flask(__name__)
