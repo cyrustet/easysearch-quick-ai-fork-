@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, send_from_directory as sd
+from flask import Flask, request, jsonify, send_from_directory as sd, render_template as rd
 import os
 import google.generativeai as genai
 from dotenv import load_dotenv
@@ -52,7 +52,7 @@ def ask():
 
 @app.route('/')
 def home():
-    return sd('.', 'max.html')
+    return rd('max.html')
     
 
 
